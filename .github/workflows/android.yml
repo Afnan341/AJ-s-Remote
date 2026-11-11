@@ -1,11 +1,17 @@
-
 name: AJ's Remote APK Build
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
+
+env:
+  ANDROID_HOME: /usr/local/lib/android/sdk
+  ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
 
 jobs:
   build:
@@ -26,13 +32,15 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-         
+
       - name: Add Android SDK tools to PATH
-        run: echo "/usr/local/lib/android/sdk/cmdline-tools/16.0/bin" >> "$GITHUB_PATH" 
+        run: echo "$ANDROID_HOME/cmdline-tools/16.0/bin" >> "$GITHUB_PATH"
+
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_HOME/cmdline-tools/16.0/bin/sdkmanager" --licenses
 
       - name: Install SDK 35
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0      - name: Install SDK 35
-        run: /usr/local/lib/android/sdk/cmdline-tools/16.0/bin/sdkmanager "platforms;android-35" "build-tools;35.0.0""
+        run: "$ANDROID_HOME/cmdline-tools/16.0/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
