@@ -26,9 +26,9 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+         
+      - name: Add Android SDK tools to PATH
+        run: echo "/usr/local/lib/android/sdk/cmdline-tools/16.0/bin" >> "$GITHUB_PATH" 
 
       - name: Install SDK 35
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
